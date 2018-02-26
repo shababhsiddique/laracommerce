@@ -132,7 +132,7 @@ class AdminController extends Controller {
             }
 
             $filename = $files->getClientOriginalName();
-            $customName = uniqid('cimg_') . $filename;
+            $customName = uniqid('cimg_') . "_".str_replace(' ','-',strtolower($category->category_title)).".".$extension;
             $imgUrl = 'public/images/categories/' . $customName;
             $destinationPath = base_path() . "/public/images/categories/";
 
@@ -319,6 +319,63 @@ class AdminController extends Controller {
         $category->category_title = $request->category_title;
         $category->category_description = $request->category_description;
 
+        $redirectUrl = 'admin/edit-category/'.$request->category_id;
+        
+        /*
+         * Image Upload
+         */
+        
+        $files = $request->file('category_image');
+
+        //File Is Selected, Proceed with upload
+        if ($files) {
+
+            $extension = $files->extension();
+
+            $allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
+
+            if (!( $request->file('category_image')->isValid() && (in_array($extension, $allowedExtensions)) )) {
+                //File Upload Failed, 
+                Session::put('message', array(
+                    'title' => 'Invalid File Selected',
+                    'body' => "Please select image file with png, jpg or bmp extension. With less than 2mb size",
+                    'type' => 'danger'
+                ));
+
+                return Redirect::to($redirectUrl);
+            }
+
+            $filename = $files->getClientOriginalName();
+            $customName = uniqid('cimg_') . "_".str_replace(' ','-',strtolower($category->category_title)).".".$extension;
+            $imgUrl = 'public/images/categories/' . $customName;
+            $destinationPath = base_path() . "/public/images/categories/";
+
+            //Try upload
+            $success = $files->move($destinationPath, $customName);
+
+            if ($success) {
+
+                if (isset($request->category_image_previous) && ($request->category_image_previous != "")) {
+                    unlink($request->category_image_previous);
+                }
+
+                $category->category_image = $imgUrl;
+
+                //If it is an edit , remove old file
+            } else {
+
+                //File Upload Failed, 
+                Session::put('message', array(
+                    'title' => 'Error',
+                    'body' => "File Upload Failed",
+                    'type' => 'danger'
+                ));
+
+
+                return Redirect::to($redirectUrl);
+            }
+        }
+        
         $category->save();
 
 
@@ -330,7 +387,7 @@ class AdminController extends Controller {
         ));
 
 
-        return Redirect::to('/admin/list-category');
+        return Redirect::to($redirectUrl);
     }
 
     /**

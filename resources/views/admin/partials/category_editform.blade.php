@@ -9,7 +9,7 @@
                 <p class="category">edit category</p>
             </div>
             <div class="card-content">
-                {!! Form::open(['url' => 'update-category','method' => 'post']) !!}
+                {!! Form::open(['url' => 'update-category','method' => 'post','enctype'=>'multipart/form-data']) !!}
                 
                 <input type="hidden" name="category_id" value="{{$oldCategoryData->category_id}}" />
                 <div class="row form-group is-focused">
@@ -43,7 +43,7 @@
                             
                             <input type="text" readonly="" class="form-control form-input-custom" placeholder="Select image file ..." value="<?php if(isset($oldArticleData)){ echo $oldArticleData->article_image;}?>"> 
                             
-                            <input type="hidden" name="article_image_previous" value="<?php if(isset($oldCategoryData)){ echo $oldCategoryData->category_image;}?>"> 
+                            <input type="hidden" name="category_image_previous" value="<?php if(isset($oldCategoryData)){ echo $oldCategoryData->category_image;}?>"> 
                             
                         </div>
                     </div>
