@@ -31,7 +31,7 @@ Route::get('/dashboard', 'AdminController@index');
 
 /* Category Management */
 Route::get('/admin/add-category', 'AdminController@addCategory');
-Route::post('/save-category', 'AdminController@saveCategory');
+Route::post('/admin/save-category', 'AdminController@saveCategory');
 
 Route::get('/admin/list-category', 'AdminController@listAllCategory');
 
@@ -39,18 +39,28 @@ Route::get('/admin/delete-category/{status}/{id}', 'AdminController@deleteCatego
 Route::get('/admin/changestatus-category/{status}/{id}', 'AdminController@changeCategoryStatus');
 
 Route::get('/admin/edit-category/{id}', 'AdminController@editCategory');
-Route::post('/update-category', 'AdminController@updateCategory');
+Route::post('/admin/update-category', 'AdminController@updateCategory');
 
 
-/* Article Management */
-Route::get('/admin/list-articles', 'AdminController@listAllArticle');
+/* Brand Management */
+Route::get('/admin/list-brands', 'AdminController@listAllBrands');
 
-Route::get('/admin/new-article', 'AdminController@newArticle');
-Route::get('/admin/edit-article/{id}', 'AdminController@editArticle');
-Route::post('/save-article', 'AdminController@saveArticle');
+Route::get('/admin/new-brand', 'AdminController@newBrand');
+Route::get('/admin/edit-brand/{id}', 'AdminController@editBrand');
+Route::post('/admin/save-brand', 'AdminController@saveBrand');
 
-Route::get('/admin/changestatus-article/{status}/{id}', 'AdminController@changeArticleStatus');
+Route::get('/admin/changestatus-brand/{status}/{id}', 'AdminController@changeBrandStatus');
 
+
+
+/* Product Management */
+Route::get('/admin/list-products', 'AdminController@listAllProduct');
+
+Route::get('/admin/new-product', 'AdminController@newProduct');
+Route::get('/admin/edit-product/{id}', 'AdminController@editProduct');
+Route::post('/admin/save-product', 'AdminController@saveProduct');
+
+Route::get('/admin/changestatus-product/{status}/{id}', 'AdminController@changeProductStatus');
 
 
 

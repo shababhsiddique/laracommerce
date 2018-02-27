@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Product;
 
 class ShopController extends Controller {
 
@@ -10,8 +13,19 @@ class ShopController extends Controller {
 
     public function __construct() {
 
+        $categories = Category::where("deletion_status", 0)
+                ->where("publication_status", 1)
+                ->get();
+
+        $brands = Brand::where("deletion_status", 0)
+                ->where("publication_status", 1)
+                ->get();
+
         //Initialize Sidebar Contents
-        $this->layout['sidebar'] = view('layouts.sidebar', array());
+        $this->layout['sidebar'] = view('layouts.sidebar', array(
+            'categories' => $categories,
+            'brands' => $brands
+        ));
     }
 
     /**
@@ -20,7 +34,19 @@ class ShopController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $this->layout['main_content'] = view('pages.index');
+        
+        $listProducts = Product::where("deletion_status", 0)
+                ->where("publication_status", 1)
+                ->get();
+        
+        $featuredProducts = Product::where("deletion_status", 0)
+                ->where("publication_status", 1)
+                ->where("featured_status", 1)
+                ->get();
+        
+        $this->layout['main_content'] = view('pages.index')
+                ->with('listProducts',$listProducts)
+                ->with('featuredProducts',$featuredProducts);
 
         return view('layouts.master', $this->layout);
     }

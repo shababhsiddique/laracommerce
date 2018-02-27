@@ -7,6 +7,8 @@ use Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Product;
 
 session_start();
 
@@ -31,6 +33,41 @@ class AdminController extends Controller {
         if ($id == NULL || $id == 0) {
             return Redirect::to('/admin')->send();
         }
+    }
+
+    /**
+     * return slug
+     * @param type $text
+     * @return string
+     */
+    private function makeSlug($prefix,$text) {
+        
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        //Add Prefix
+        $text = $prefix.$text;
+        
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
     }
 
     /**
@@ -71,7 +108,7 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
-    /*     * *
+    /**
      * Category Management Start
      */
 
@@ -103,14 +140,14 @@ class AdminController extends Controller {
 
         $category->category_title = $request->category_title;
         $category->category_description = $request->category_description;
-        $category->publication_status = $request->publication_status;        
-        
+        $category->publication_status = $request->publication_status;
+
         $redirectUrl = 'admin/list-category';
-        
+
         /*
          * Image Upload
          */
-        
+
         $files = $request->file('category_image');
 
         //File Is Selected, Proceed with upload
@@ -132,7 +169,7 @@ class AdminController extends Controller {
             }
 
             $filename = $files->getClientOriginalName();
-            $customName = uniqid('cimg_') . "_".str_replace(' ','-',strtolower($category->category_title)).".".$extension;
+            $customName = uniqid('cimg_') . "_" . str_replace(' ', '_', strtolower($category->category_title)) . "." . $extension;
             $imgUrl = 'public/images/categories/' . $customName;
             $destinationPath = base_path() . "/public/images/categories/";
 
@@ -162,8 +199,8 @@ class AdminController extends Controller {
                 return Redirect::to($redirectUrl);
             }
         }
-        
-        
+
+
 
         $category->save();
 
@@ -208,7 +245,7 @@ class AdminController extends Controller {
      * Delete Category By ID
      * @param type $id
      */
-    public function deleteCategory($status , $id) {
+    public function deleteCategory($status, $id) {
 
         $this->authCheck();
         $category = Category::find($id);
@@ -225,7 +262,6 @@ class AdminController extends Controller {
                 'body' => 'Category restored',
                 'type' => 'success'
             ));
-            
         } else {
             //Delete
             //if ($category->articles->isEmpty()) {
@@ -250,8 +286,6 @@ class AdminController extends Controller {
                 ));
             }
         }
-
-
 
         return Redirect::to('/admin/list-category');
     }
@@ -319,12 +353,12 @@ class AdminController extends Controller {
         $category->category_title = $request->category_title;
         $category->category_description = $request->category_description;
 
-        $redirectUrl = 'admin/edit-category/'.$request->category_id;
-        
+        $redirectUrl = 'admin/edit-category/' . $request->category_id;
+
         /*
          * Image Upload
          */
-        
+
         $files = $request->file('category_image');
 
         //File Is Selected, Proceed with upload
@@ -346,7 +380,7 @@ class AdminController extends Controller {
             }
 
             $filename = $files->getClientOriginalName();
-            $customName = uniqid('cimg_') . "_".str_replace(' ','-',strtolower($category->category_title)).".".$extension;
+            $customName = uniqid('cimg_') . "_" . str_replace(' ', '_', strtolower($category->category_title)) . "." . $extension;
             $imgUrl = 'public/images/categories/' . $customName;
             $destinationPath = base_path() . "/public/images/categories/";
 
@@ -375,7 +409,7 @@ class AdminController extends Controller {
                 return Redirect::to($redirectUrl);
             }
         }
-        
+
         $category->save();
 
 
@@ -393,46 +427,231 @@ class AdminController extends Controller {
     /**
      * Category Management End
      * 
-     * 
-     * 
      */
     /**
-     * Article Management Start
+     * Brand Management Start
      */
 
     /**
-     * Write new Article
+     * Add Brand
      */
-    public function newArticle() {
+    public function newBrand() {
 
         $this->authCheck();
 
-        $listCategories = Category::all();
-
         //Load Component        
-        $this->layout['adminContent'] = view('admin.partials.article_form')
-                ->with('listCategories', $listCategories);
+        $this->layout['adminContent'] = view('admin.partials.brand_form');
 
         //return view
         return view('admin.master', $this->layout);
     }
 
     /**
-     * Edit Article
-     * @param type $article_id
-     * @return type
+     * edit brand
+     * @param type $brand_id
      */
-    public function editArticle($article_id) {
+    public function editBrand($brand_id) {
 
         $this->authCheck();
 
-        $listCategories = Category::all();
-        $oldArticleData = Article::find($article_id);
+        $oldBrandData = Brand::find($brand_id);
 
         //Load Component        
-        $this->layout['adminContent'] = view('admin.partials.article_form')
+        $this->layout['adminContent'] = view('admin.partials.brand_form')
+                ->with('oldBrandData', $oldBrandData);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Save Brand (form submit handler)
+     * @param Request $request
+     * @return type
+     */
+    public function saveBrand(Request $request) {
+
+        $this->authCheck();
+
+        if (isset($request->brand_id)) {
+            //Its Update
+            $brand = Brand::find($request->brand_id);
+            $redirectUrl = '/admin/edit-brand/' . $request->brand_id;
+        } else {
+            //Its new
+            $brand = new Brand;
+            $redirectUrl = '/admin/list-brands';
+        }
+
+
+        $brand->brand_title = $request->brand_title;
+        $brand->brand_description = $request->brand_description;
+
+
+        $brand->publication_status = $request->publication_status;
+        $brand->deletion_status = 0;
+
+        $brand->save();
+
+        if (isset($request->brand_id)) {
+
+            //Message for Notification Builder
+            Session::put('message', array(
+                'title' => 'Updated Brand',
+                'body' => "Brand has been updated",
+                'type' => 'info'
+            ));
+        } else {
+
+            //Message for Notification Builder
+            Session::put('message', array(
+                'title' => 'Added New Brand',
+                'body' => "Brand has been created",
+                'type' => 'success'
+            ));
+        }
+
+        return Redirect::to($redirectUrl);
+    }
+
+    /**
+     * List All Brands
+     * @return type
+     */
+    public function listAllBrands() {
+
+        $this->authCheck();
+
+        $listBrands = Brand::where("deletion_status", 0)
+                ->orderBy('brand_id', 'DESC')
+                ->get();
+
+        $deletedBrands = Brand::where("deletion_status", 1)
+                ->orderBy('updated_at', 'DESC')
+                ->get();
+
+
+        //Load Component        
+        $this->layout['adminContent'] = view('admin.partials.brand_table')
+                ->with('allBrands', $listBrands)
+                ->with('deletedBrands', $deletedBrands);
+
+
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Change Brand Status
+     * @param type $status
+     * @param type $id
+     * @return type
+     */
+    public function changeBrandStatus($status, $id) {
+
+        $this->authCheck();
+
+        $brand = Brand::find($id);
+
+        switch ($status) {
+            case "del":
+
+                $brand->deletion_status = 1;
+                $brand->save();
+
+                //Message for Notification Builder
+                Session::put('message', array(
+                    'title' => 'Deleted Brand',
+                    'body' => 'Brand moved to trash',
+                    'type' => 'success'
+                ));
+                break;
+            case "rec":
+
+                $brand->deletion_status = 0;
+                $brand->save();
+
+
+                //Message for Notification Builder
+                Session::put('message', array(
+                    'title' => 'Brand Restored',
+                    'body' => 'Brand moved back from trash',
+                    'type' => 'success'
+                ));
+                break;
+            case "pub":
+
+                $brand->publication_status = 1;
+                $brand->save();
+
+                //Message for Notification Builder
+                Session::put('message', array(
+                    'title' => 'Updated Brand Status to published',
+                    'body' => 'This brand is now visible',
+                    'type' => 'success'
+                ));
+                break;
+            default:
+
+                $brand->publication_status = 0;
+                $brand->save();
+
+                //Message for Notification Builder
+                Session::put('message', array(
+                    'title' => 'Updated Brand Status to unpublished',
+                    'body' => 'This brand will be invisible',
+                    'type' => 'success'
+                ));
+                break;
+        }
+
+        return Redirect::to('/admin/list-brands');
+    }
+
+    /**
+     * Brand Management End
+     */
+    /**
+     * Product Management Start
+     */
+
+    /**
+     * Create Product
+     */
+    public function newProduct() {
+
+        $this->authCheck();
+
+        $listCategories = Category::where('deletion_status', 0)->where('publication_status', 1)->get();
+        $listBrands = Brand::where('deletion_status', 0)->where('publication_status', 1)->get();
+
+        //Load Component        
+        $this->layout['adminContent'] = view('admin.partials.product_form')
                 ->with('listCategories', $listCategories)
-                ->with('oldArticleData', $oldArticleData);
+                ->with('listBrands', $listBrands);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Edit Product By ID
+     * @param type $product_id
+     * @return type
+     */
+    public function editProduct($product_id) {
+
+        $this->authCheck();
+
+        $listCategories = Category::where('deletion_status', 0)->where('publication_status', 1)->get();
+        $listBrands = Brand::where('deletion_status', 0)->where('publication_status', 1)->get();
+
+        $oldProductData = Product::find($product_id);
+
+        //Load Component        
+        $this->layout['adminContent'] = view('admin.partials.product_form')
+                ->with('listCategories', $listCategories)
+                ->with('listBrands', $listBrands)
+                ->with('oldProductData', $oldProductData);
 
         //return view
         return view('admin.master', $this->layout);
@@ -443,20 +662,18 @@ class AdminController extends Controller {
      * @param Request $request
      * @return type
      */
-    public function saveArticle(Request $request) {
+    public function saveProduct(Request $request) {
 
         $this->authCheck();
 
-        $oldFileName = $request->article_image_previous;
-
-        if (isset($request->article_id)) {
+        if (isset($request->product_id)) {
             //Its Update
-            $article = Article::find($request->article_id);
-            $redirectUrl = '/admin/edit-article/' . $request->article_id;
+            $product = Product::find($request->product_id);
+            $redirectUrl = '/admin/edit-product/' . $request->product_id;
         } else {
             //Its new
-            $article = new Article;
-            $redirectUrl = '/admin/list-articles';
+            $product = new Product;
+            $redirectUrl = '/admin/list-products';
         }
 
 
@@ -464,7 +681,7 @@ class AdminController extends Controller {
          * Image Upload
          */
 
-        $files = $request->file('article_image');
+        $files = $request->file('product_image');
 
         //File Is Selected, Proceed with upload
         if ($files) {
@@ -473,7 +690,7 @@ class AdminController extends Controller {
 
             $allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
 
-            if (!( $request->file('article_image')->isValid() && (in_array($extension, $allowedExtensions)) )) {
+            if (!( $request->file('product_image')->isValid() && (in_array($extension, $allowedExtensions)) )) {
                 //File Upload Failed, 
                 Session::put('message', array(
                     'title' => 'Invalid File Selected',
@@ -485,24 +702,22 @@ class AdminController extends Controller {
             }
 
             $filename = $files->getClientOriginalName();
-            $customName = date('His') . $filename;
-            $imgUrl = 'public/article_images/' . $customName;
-            $destinationPath = base_path() . "/public/article_images/";
+            $customName = uniqid('pimg_') . "_" . str_replace(' ', '_', strtolower($request->product_title)) . "." . $extension;
+            $imgUrl = 'public/images/products/' . $customName;
+            $destinationPath = base_path() . "/public/images/products/";
 
             //Try upload
             $success = $files->move($destinationPath, $customName);
 
             if ($success) {
 
-
-
-
-                if (isset($request->article_id) && ($request->article_image_previous != "")) {
-                    $oldFileName = $request->article_image_previous;
+                //Delete Old iMage if edit and has old image
+                if (isset($request->product_id) && ($request->product_image_previous != "")) {
+                    $oldFileName = $request->product_image_previous;
                     unlink($oldFileName);
                 }
 
-                $article->article_image = $imgUrl;
+                $product->product_image = $imgUrl;
 
                 //If it is an edit , remove old file
             } else {
@@ -522,43 +737,45 @@ class AdminController extends Controller {
 
 
         /* Common Tasks */
-        $article->article_title = $request->article_title;
+        $product->product_title = $request->product_title;
+        $product->product_teaser = $request->product_teaser;
+        $product->product_description = $request->product_description;
 
-        $article->article_preface = $request->article_preface;
-        $article->article_body = $request->article_body;
+        $product->product_slug = $request->product_slug;
+        if ($product->product_slug == "") {
+            //Need work here later
+            $product->product_slug = $this->makeSlug($request->product_id,$request->product_title);
+        }
 
-        $article->article_slug = $request->article_slug;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+        $product->product_model = $request->product_model;
 
-        $article->category_id = $request->category_id;
+        $product->product_price = $request->product_price;
+        $product->product_quantity = $request->product_quantity;
+        $product->product_minimum_order = $request->product_minimum_order;
+        $product->product_reorder_level = $request->product_reorder_level;
 
-        $article->article_author = Session::get('admin_name');
+        $product->publication_status = $request->publication_status;
 
-        $article->publication_status = $request->publication_status;
+        $product->deletion_status = 0;
 
-        $article->deletion_status = 0;
+        $product->save();
 
-        $article->save();
-
-        if (isset($request->article_id)) {
-
-            //Its Update
-            $article = Article::find($request->article_id);
+        if (isset($request->product_id)) {
 
             //Message for Notification Builder
             Session::put('message', array(
-                'title' => 'Updated Article',
-                'body' => "Article has been updated",
+                'title' => 'Updated Product',
+                'body' => "Product has been updated",
                 'type' => 'info'
             ));
         } else {
 
-            //Its new
-            $article = new Article;
-
             //Message for Notification Builder
             Session::put('message', array(
-                'title' => 'Created New Article',
-                'body' => "Article has been created",
+                'title' => 'Created New Product',
+                'body' => "Product has been created",
                 'type' => 'success'
             ));
         }
@@ -570,29 +787,29 @@ class AdminController extends Controller {
      * List Articles Grid
      * @return type
      */
-    public function listAllArticle() {
+    public function listAllProduct() {
 
         $this->authCheck();
 
-        $listArticles = Article::where("deletion_status", 0)
+        $listProducts = Product::where("deletion_status", 0)
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
-        $dltdArticles = Article::where("deletion_status", 1)
+        $deletedProducts = Product::where("deletion_status", 1)
                 ->orderBy('updated_at', 'DESC')
                 ->get();
 
-        $favArticles = Article::where("favourite_status", 1)
+        $featuredProducts = Product::where("featured_status", 1)
                 ->where("deletion_status", 0)
                 ->where("publication_status", 1)
                 ->orderBy('updated_at', 'DESC')
                 ->get();
 
         //Load Component        
-        $this->layout['adminContent'] = view('admin.partials.article_table')
-                ->with('allArticles', $listArticles)
-                ->with('deletedArticles', $dltdArticles)
-                ->with('favouriteArticles', $favArticles);
+        $this->layout['adminContent'] = view('admin.partials.product_table')
+                ->with('allProducts', $listProducts)
+                ->with('deletedProducts', $deletedProducts)
+                ->with('featuredProducts', $featuredProducts);
 
 
         return view('admin.master', $this->layout);
@@ -604,99 +821,96 @@ class AdminController extends Controller {
      * @param type $id
      * @return type
      */
-    public function changeArticleStatus($status, $id) {
+    public function changeProductStatus($status, $id) {
 
         $this->authCheck();
 
+        $product = Product::find($id);
 
         switch ($status) {
             case "fav":
 
-                $article = Article::find($id);
-                $article->favourite_status = 1;
-                $article->save();
+                
+                $product->featured_status = 1;
+                $product->save();
 
                 //Message for Notification Builder
                 Session::put('message', array(
-                    'title' => 'Article Set To Favourite',
-                    'body' => 'Article marked as favourite',
+                    'title' => 'Product Set To Featured',
+                    'body' => 'Product marked as featured',
                     'type' => 'success'
                 ));
                 break;
             case "unfav":
 
-                $article = Article::find($id);
-                $article->favourite_status = 0;
-                $article->save();
+                
+                $product->featured_status = 0;
+                $product->save();
 
                 //Message for Notification Builder
                 Session::put('message', array(
-                    'title' => 'Article Favourite Flag Removed',
-                    'body' => 'Article unmarked as favourite',
+                    'title' => 'Product Featured Flag Removed',
+                    'body' => 'Product unmarked as featured',
                     'type' => 'success'
                 ));
                 break;
             case "del":
 
-                $article = Article::find($id);
-                $article->deletion_status = 1;
-                $article->save();
+                $product->deletion_status = 1;
+                $product->save();
 
                 //Message for Notification Builder
                 Session::put('message', array(
-                    'title' => 'Deleted Article',
-                    'body' => 'Article moved to trash',
+                    'title' => 'Deleted Product',
+                    'body' => 'Product moved to trash',
                     'type' => 'success'
                 ));
                 break;
             case "rec":
 
-                $article = Article::find($id);
-                $article->deletion_status = 0;
-                $article->save();
-
+                $product->deletion_status = 0;
+                $product->save();
 
                 //Message for Notification Builder
                 Session::put('message', array(
-                    'title' => 'Article Restored',
-                    'body' => 'Article moved back from trash',
+                    'title' => 'Product Restored',
+                    'body' => 'Product recycled back',
                     'type' => 'success'
                 ));
                 break;
             case "pub":
 
-                $article = Article::find($id);
-                $article->publication_status = 1;
-                $article->save();
+                $product->publication_status = 1;
+                $product->save();
 
                 //Message for Notification Builder
                 Session::put('message', array(
-                    'title' => 'Updated Article Status to published',
-                    'body' => 'This article is now visible',
+                    'title' => 'Updated Product Status to published',
+                    'body' => 'This product is now visible',
                     'type' => 'success'
                 ));
                 break;
             default:
 
-                $article = Article::find($id);
-                $article->publication_status = 0;
-                $article->save();
+                $product->publication_status = 0;
+                $product->save();
 
                 //Message for Notification Builder
                 Session::put('message', array(
-                    'title' => 'Updated Article Status to unpublished',
-                    'body' => 'This article will be invisible',
+                    'title' => 'Updated Product Status to unpublished',
+                    'body' => 'This product will be invisible',
                     'type' => 'success'
                 ));
                 break;
         }
 
-        return Redirect::to('/admin/list-articles');
+        return Redirect::to('/admin/list-products');
     }
 
     /**
-     * Article Management End
+     * Product Management End
      */
+   
 
     /**
      * For testing purposes

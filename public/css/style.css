@@ -163,3 +163,38 @@ footer.page-footer {
     text-decoration: none !important;
     color: #717579 !important;
 }
+
+.shop-card-image-holder{
+    
+    height: 220px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.shop-card-image{
+/*    height: 200px !important;
+    width: auto !important;*/
+}
+
+.shop-card-title{
+    min-height: 38px;
+}
+
+.shop-card-teaser{
+    min-height: 45px;
+    margin: 3px 0px !important;
+}
+
+.shop-card-link{
+    color: black;
+}
+
+/*@media (min-width:34em) {
+    .product-deck > .card
+    {
+        width: 29%;
+        flex-wrap: wrap;
+        flex: initial; 
+    }
+}*/

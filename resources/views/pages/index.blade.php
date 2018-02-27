@@ -74,204 +74,94 @@
     </div>
     <!--/.First row-->
     <br>
-
     <h3 class="">Featured</h3>
     <hr class="extra-margins">
 
+    <!--Third row-->
+    <div class="row product-deck">
 
-    <!--Second row-->
-    <div class="row">
+        @foreach ($featuredProducts as $aProduct)
         <!--First columnn-->
         <div class="col-lg-4">
             <!--Card-->
-            <div class="card mb-r wow fadeIn" data-wow-delay="0.2s">
+            <a class="shop-card-link" href="{{url('product/'.$aProduct->product_id)}}">
+                <div class="card mb-r wow fadeIn" data-wow-delay="0.2s">
 
-                <!--Card image-->
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" alt="Card image cap">
+                    <!--Card image-->
+                    <div class="shop-card-image-holder" style="background-image: url('{{asset($aProduct->product_image)}}')">
+    <!--                    <img class="img-fluid shop-card-image" src="{{asset($aProduct->product_image)}}" alt="{{$aProduct->product_title}}">-->
+                    </div>
 
-                <!--Card content-->
-                <div class="card-body">
-                    <!--Title-->
-                    <h5 class="font-bold">
-                        <strong>Product title</strong>
-                        <span class="badge badge-danger">Sold out</span>
-                    </h5>
-                    <hr>
-                    <h4>
-                        <strong>1229$</strong>
-                    </h4>
-                    <!--Text-->
-                    <p class="card-text mt-4">Some quick example text to build on the card title.
-                    </p>
+                    <!--Card content-->
+                    <div class="card-body">
+                        <!--Title-->
+                        <h5 class="font-bold shop-card-title">
+                            <strong>{{$aProduct->product_title}}</strong>                        
+                            <!--<span class="badge badge-danger">Sold out</span>-->
+                        </h5>
+                        <hr>
+                        <h4 class="shop-card-price">
+                            <strong>{{$aProduct->product_price}}-Tk</strong>
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text mt-4 shop-card-teaser">{!!$aProduct->product_teaser!!}</p>
 
-                    <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
+                        <a href="{{url('buy/'.$aProduct->product_id)}}" class="btn btn-primary btn-sm">Buy now </a>
+                    </div>
+
                 </div>
-
-            </div>
+            </a>
             <!--/.Card-->
         </div>
-        <!--First columnn-->
+        <!--First columnn-->        
+        @endforeach
 
-        <!--Second columnn-->
-        <div class="col-lg-4">
-            <!--Card-->
-            <div class="card mb-r wow fadeIn" data-wow-delay="0.4s">
-
-                <!--Card image-->
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/16.jpg" alt="Card image cap">
-
-                <!--Card content-->
-                <div class="card-body">
-                    <!--Title-->
-                    <h5 class="font-bold">
-                        <strong>Product title</strong>
-                        <span class="badge badge-info">New</span>
-                    </h5>
-                    <hr>
-                    <h4>
-                        <strong>150$</strong>
-                    </h4>
-                    <!--Text-->
-                    <p class="card-text mt-4">Some quick example text to build on the card title.
-                    </p>
-
-                    <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
-                </div>
-
-            </div>
-            <!--/.Card-->
-        </div>
-        <!--Second columnn-->
-
-        <!--Third columnn-->
-        <div class="col-lg-4">
-            <!--Card-->
-            <div class="card mb-r wow fadeIn" data-wow-delay="0.6s">
-
-                <!--Card image-->
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/7.jpg" alt="Card image cap">
-
-                <!--Card content-->
-                <div class="card-body">
-                    <!--Title-->
-                    <h5 class="font-bold">
-                        <strong>Product title</strong>
-                        <span class="badge badge-pink">Bestseller</span>
-                    </h5>
-                    <hr>
-                    <h4>
-                        <strong>3100$</strong>
-                    </h4>
-                    <!--Text-->
-                    <p class="card-text mt-4">Some quick example text to build on the card title.
-                    </p>
-
-                    <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
-                </div>
-
-            </div>
-            <!--/.Card-->
-
-        </div>
-        <!--Third columnn-->
     </div>
-    <!--/.Second row-->
+    <!--/.Third row-->
+
+    <br/>
+
+    <h3 class="">All Products</h3>
+    <hr class="extra-margins">
 
     <!--Third row-->
     <div class="row">
+        @foreach ($listProducts as $aProduct)
         <!--First columnn-->
         <div class="col-lg-4">
             <!--Card-->
-            <div class="card mb-r wow fadeIn" data-wow-delay="0.2s">
+            <a class="shop-card-link" href="{{url('product/'.$aProduct->product_id)}}">
+                <div class="card mb-r wow fadeIn" data-wow-delay="0.2s">
 
-                <!--Card image-->
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" alt="Card image cap">
+                    <!--Card image-->
+                    <div class="shop-card-image-holder" style="background-image: url('{{asset($aProduct->product_image)}}')">
+    <!--                    <img class="img-fluid shop-card-image" src="{{asset($aProduct->product_image)}}" alt="{{$aProduct->product_title}}">-->
+                    </div>
 
-                <!--Card content-->
-                <div class="card-body">
-                    <!--Title-->
-                    <h5 class="font-bold">
-                        <strong>Product title</strong>
-                        <span class="badge badge-danger">Sold out</span>
-                    </h5>
-                    <hr>
-                    <h4>
-                        <strong>1229$</strong>
-                    </h4>
-                    <!--Text-->
-                    <p class="card-text mt-4">Some quick example text to build on the card title.
-                    </p>
+                    <!--Card content-->
+                    <div class="card-body">
+                        <!--Title-->
+                        <h5 class="font-bold shop-card-title">
+                            <strong>{{$aProduct->product_title}}</strong>
+                            <!--<span class="badge badge-danger">Sold out</span>-->
+                        </h5>
+                        <hr>
+                        <h4 class="shop-card-price">
+                            <strong>{{$aProduct->product_price}}-Tk</strong>
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text mt-4 shop-card-teaser">{!!$aProduct->product_teaser!!}</p>
 
-                    <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
-                </div>
+                        <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
+                    </div>
 
-            </div>
+                </div>                
+            </a>
             <!--/.Card-->
         </div>
-        <!--First columnn-->
+        <!--First columnn-->        
+        @endforeach
 
-        <!--Second columnn-->
-        <div class="col-lg-4">
-            <!--Card-->
-            <div class="card mb-r wow fadeIn" data-wow-delay="0.4s">
-
-                <!--Card image-->
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/20.jpg" alt="Card image cap">
-
-                <!--Card content-->
-                <div class="card-body">
-                    <!--Title-->
-                    <h5 class="font-bold">
-                        <strong>Product title</strong>
-                        <span class="badge badge-danger">Sold out</span>
-                    </h5>
-                    <hr>
-                    <h4>
-                        <strong>150$</strong>
-                    </h4>
-                    <!--Text-->
-                    <p class="card-text mt-4">Some quick example text to build on the card title.
-                    </p>
-
-                    <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
-                </div>
-
-            </div>
-            <!--/.Card-->
-        </div>
-        <!--Second columnn-->
-
-        <!--Third columnn-->
-        <div class="col-lg-4">
-            <!--Card-->
-            <div class="card mb-r wow fadeIn" data-wow-delay="0.6s">
-
-                <!--Card image-->
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/15.jpg" alt="Card image cap">
-
-                <!--Card content-->
-                <div class="card-body">
-                    <!--Title-->
-                    <h5 class="font-bold">
-                        <strong>Product title</strong>
-                        <span class="badge badge-pink">Bestseller</span>
-                    </h5>
-                    <hr>
-                    <h4>
-                        <strong>3100$</strong>
-                    </h4>
-                    <!--Text-->
-                    <p class="card-text mt-4">Some quick example text to build on the card title.
-                    </p>
-
-                    <a href="#" class="btn btn-primary btn-sm">Buy now </a>
-                </div>
-
-            </div>
-            <!--/.Card-->
-
-        </div>
-        <!--Third columnn-->
     </div>
     <!--/.Third row-->
 

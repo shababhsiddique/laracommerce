@@ -9,7 +9,7 @@
                 <p class="category">create new category for products posts</p>
             </div>
             <div class="card-content">
-                {!! Form::open(['url' => 'save-category','method' => 'post','enctype'=> 'multipart/form-data']) !!}                
+                {!! Form::open(['url' => 'admin/save-category','method' => 'post','enctype'=> 'multipart/form-data']) !!}                
                 <div class="row form-group is-focused">
                     <div class="col-sm-3">
                         <label class="custom-form-label">Category Title</label>

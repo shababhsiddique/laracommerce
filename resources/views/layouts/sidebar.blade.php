@@ -3,25 +3,18 @@
 @section('sidebarLeft')
 
 <!--Sidebar-->
-<div class="col-lg-3 wow fadeIn" data-wow-delay="0.2s">
+<div class="col-lg-3">
 
     <div class="widget-wrapper">
         <div class="list-group z-depth-1">
-            <a href="#" class="list-group-item waves-effect">Smartphone</a>
-            <a href="#" class="list-group-item waves-effect">Laptop</a>
-            <a href="#" class="list-group-item waves-effect">Camera</a>
-            <a href="#" class="list-group-item waves-effect">Headphones</a>
-            <a href="#" class="list-group-item waves-effect">Tablet</a>
-            <a href="#" class="list-group-item waves-effect">Gadgets</a>
-            <a href="#" class="list-group-item waves-effect">Toys</a>
-            <a href="#" class="list-group-item waves-effect">Tools</a>
-            <a href="#" class="list-group-item waves-effect">Home Appliances</a>
+            @foreach($categories as $aCategory)
+            <a href="#" class="list-group-item waves-effect">{{$aCategory->category_title}}</a>
+            @endforeach
         </div>
     </div>
 
     <div class="widget-wrapper">
         <h4 class="h4-responsive font-bold mb-3 mt-4">Price:</h4>
-        <br>
         <div class="list-group">
             <a href="#" class="list-group-item active">100$ - 399$</a>
             <a href="#" class="list-group-item">400$ - 899$</a>
@@ -29,6 +22,16 @@
             <a href="#" class="list-group-item">1600$ - 7999$</a>
         </div>
     </div>
+    
+    <div class="widget-wrapper">
+        <h4 class="h4-responsive font-bold mb-3 mt-4">Brands:</h4>
+        <div class="list-group">
+            @foreach($brands as $aBrand)
+            <a href="#" class="list-group-item">{{$aBrand->brand_title}}</a>
+            @endforeach
+        </div>
+    </div>
+
 
     <div class="widget-wrapper wow fadeIn" data-wow-delay="0.4s">
         <h4 class="h4-responsive font-bold">Subscription form:</h4>

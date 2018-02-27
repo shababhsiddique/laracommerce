@@ -22,16 +22,29 @@
                     <li><a class="dropdown-item" href="{{url('/admin/add-category')}}">Create New</a></li>
                 </ul>  
             </li>
-            <li class="sidesub {{ ( Request::is('admin/new-article') || Request::is('admin/edit-article/*') || Request::is('admin/list-articles')) ? 'active open' : '' }}">
+            
+            <li class="sidesub {{ (Request::is('admin/new-brand')||Request::is('admin/list-brands')||Request::is('admin/edit-brand/*')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">view_list</i>
-                    <p>Manage Articles</p>
+                    <p>Manage Brands</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" href="{{url('/admin/list-articles')}}">List All</a></li>
-                    <li><a class="dropdown-item" href="{{url('/admin/new-article')}}">New Article</a></li>
+                    <li><a class="dropdown-item" href="{{url('/admin/list-brands')}}">List All</a></li>
+                    <li><a class="dropdown-item" href="{{url('/admin/new-brand')}}">Create New</a></li>
                 </ul>  
             </li>
+            
+            <li class="sidesub {{ ( Request::is('admin/new-product') || Request::is('admin/edit-product/*') || Request::is('admin/list-products')) ? 'active open' : '' }}">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">view_list</i>
+                    <p>Manage Products</p>
+                </a>
+                <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="{{url('/admin/list-products')}}">List All</a></li>
+                    <li><a class="dropdown-item" href="{{url('/admin/new-product')}}">New Product</a></li>
+                </ul>  
+            </li>
+            
             <li>
                 <a href="./icons.html">
                     <i class="material-icons">bubble_chart</i>

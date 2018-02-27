@@ -9,7 +9,7 @@
                 <p class="category">edit category</p>
             </div>
             <div class="card-content">
-                {!! Form::open(['url' => 'update-category','method' => 'post','enctype'=>'multipart/form-data']) !!}
+                {!! Form::open(['url' => 'admin/update-category','method' => 'post','enctype'=>'multipart/form-data']) !!}
                 
                 <input type="hidden" name="category_id" value="{{$oldCategoryData->category_id}}" />
                 <div class="row form-group is-focused">

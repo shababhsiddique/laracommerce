@@ -6931,3 +6931,13 @@ ul.sidesub-ul li a:hover{
     height: 35px;
     top: 5px;
 }
+
+.grid-thumb{
+    height: 70px !important;
+    width: auto !important;
+}
+
+.featuredWrapper div{
+    float: left;
+    padding: 5px;
+}
