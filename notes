@@ -1,0 +1,21 @@
+1) git clone https://github.com/shababhsiddique/laracommerce.git (on remote machine)
+
+2) cd yourproject
+
+3) composer install (this will create 'vendor' folder and download all packages)    
+
+For Database:
+
+4) Create database . eg. db_laravel_blog_batch11
+
+5) run migration
+        php artisan migrate
+
+        or
+
+        php artisan migrate:fresh (if you already have database and want to overwrite)
+
+6) For seeding sample data
+        
+        composr dumb-autoload
+        php artisan db:seed
