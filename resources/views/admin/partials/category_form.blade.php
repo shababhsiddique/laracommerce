@@ -9,33 +9,25 @@
                 <p class="category">create new category for products posts</p>
             </div>
             <div class="card-content">
-                {!! Form::open(['url' => 'admin/save-category','method' => 'post','enctype'=> 'multipart/form-data']) !!}                
+                {!! Form::open(['url' => 'admin/save-category','method' => 'post']) !!}                
                 <div class="row form-group is-focused">
                     <div class="col-sm-3">
                         <label class="custom-form-label">Category Title</label>
                     </div>
                     <div class="col-sm-9">
                         <input autofocus="" name="category_title" type="text" class="form-control form-input-custom">
+                        @if ($errors->has('category_title'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('category_title') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            This will be on Homepage Menu, keep below 30 chars
+                        </span>
+                        @endif
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <div class="col-sm-3">
-                        {!! Form::label('category_image', 'Category Image',['class' => 'custom-form-label']) !!}
-                    </div>
-                    <div class="col-sm-9 custom-file-input">
-                        <input type="file" name="category_image" id="inputFile4"> 
-                        <div class="input-group"> 
-                            <div class="input-group-btn input-group-sm"> 
-                                <button type="button" class="btn btn-primary"> 
-                                    <i class="material-icons">attach_file</i> 
-                                </button>
-                            </div> 
-                            
-                            <input type="text" readonly="" class="form-control form-input-custom" placeholder="Select image file ..." value=""> 
-                        </div>
-                    </div>
-                </div>
                 
                 <div class="row form-group">
                     <div class="col-sm-3">
@@ -43,6 +35,15 @@
                     </div>
                     <div class="col-sm-9">
                         <textarea name="category_description" class="form-control form-input-custom" rows="5"></textarea>
+                        @if ($errors->has('category_title'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('category_title') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            Required
+                        </span>
+                        @endif
                     </div>
                 </div>
                 <div class="row form-group">

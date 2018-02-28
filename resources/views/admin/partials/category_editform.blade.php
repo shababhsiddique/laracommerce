@@ -9,7 +9,7 @@
                 <p class="category">edit category</p>
             </div>
             <div class="card-content">
-                {!! Form::open(['url' => 'admin/update-category','method' => 'post','enctype'=>'multipart/form-data']) !!}
+                {!! Form::open(['url' => 'admin/update-category','method' => 'post']) !!}
                 
                 <input type="hidden" name="category_id" value="{{$oldCategoryData->category_id}}" />
                 <div class="row form-group is-focused">
@@ -18,36 +18,19 @@
                     </div>
                     <div class="col-sm-9">
                         <input autofocus="" name="category_title" type="text" class="form-control form-input-custom" value="{{$oldCategoryData->category_title}}">
+                        @if ($errors->has('category_title'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('category_title') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            Human Readable Name
+                        </span>
+                        @endif
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    
-                    <div class="col-sm-9 col-sm-offset-3">
-                        <img src="<?php if(isset($oldCategoryData)){ echo asset($oldCategoryData->category_image);}?>" class="img-responsive img-fluid" style="width: 150px"/>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="col-sm-3">
-                        {!! Form::label('category_image', 'Category Images',['class' => 'custom-form-label']) !!}
-                    </div>
-                    <div class="col-sm-9 custom-file-input">
-                        <input type="file" name="category_image" id="inputFile4"> 
-                        <div class="input-group"> 
-                            <div class="input-group-btn input-group-sm"> 
-                                <button type="button" class="btn btn-primary"> 
-                                    <i class="material-icons">attach_file</i> 
-                                </button>
-                            </div> 
-                            
-                            <input type="text" readonly="" class="form-control form-input-custom" placeholder="Select image file ..." value="<?php if(isset($oldArticleData)){ echo $oldArticleData->article_image;}?>"> 
-                            
-                            <input type="hidden" name="category_image_previous" value="<?php if(isset($oldCategoryData)){ echo $oldCategoryData->category_image;}?>"> 
-                            
-                        </div>
-                    </div>
-                </div>
+                               
                 
                 <div class="row form-group">
                     <div class="col-sm-3">
@@ -55,6 +38,15 @@
                     </div>
                     <div class="col-sm-9">
                         <textarea name="category_description" class="form-control form-input-custom" rows="5">{{$oldCategoryData->category_description}}</textarea>
+                        @if ($errors->has('category_title'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('category_title') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            Human Readable Name
+                        </span>
+                        @endif
                     </div>
                 </div>
                 <div class="row form-group">

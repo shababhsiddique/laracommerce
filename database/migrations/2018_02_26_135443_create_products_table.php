@@ -27,7 +27,7 @@ class CreateProductsTable extends Migration
             $table->integer('brand_id');
             
             $table->string("product_model");
-            $table->string("product_options")->default("");
+            $table->string("product_options")->nullable();
             
             $table->string("product_quantity");
             $table->string("product_price");

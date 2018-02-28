@@ -16,46 +16,27 @@
             <div id="carousel-example-1z" class="z-depth-1-half carousel slide carousel-fade" data-ride="carousel">
                 <!--Indicators-->
                 <ol class="carousel-indicators">
-                    <li data-target="#carousel-example-1z" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel-example-1z" data-slide-to="1"></li>
-                    <li data-target="#carousel-example-1z" data-slide-to="2"></li>
+                    @foreach ($sliderImages as $index => $anImage)
+                    <li data-target="#carousel-example-1z" data-slide-to="{{$index}}" class="{{ ($index == 0) ? 'active' : '' }}" ></li>
+                     @endforeach                    
                 </ol>
                 <!--/.Indicators-->
                 <!--Slides-->
                 <div class="carousel-inner" role="listbox">
-                    <!--First slide-->
-                    <div class="carousel-item active">
-                        <img src="https://mdbootstrap.com/img/Photos/Others/product1.jpg" alt="First slide" class="img-fluid rounded">
+                    
+                    @foreach ($sliderImages as $index => $anImage)
+                    <div class="carousel-item {{ ($index == 0) ? 'active' : '' }}">
+                        <img src="{{asset($anImage['dirname'].'/'.$anImage['basename'])}}" alt="{{$anImage['basename']}}" class="img-fluid rounded">
                         <div class="carousel-caption">
                             <h3 class="font-bold red-text">
-                                <strong>New products!</strong>
+                                <!--<strong>New products!</strong>-->
                             </h3>
                             <br>
                         </div>
                     </div>
-                    <!--/First slide-->
-                    <!--Second slide-->
-                    <div class="carousel-item">
-                        <img src="https://mdbootstrap.com/img/Photos/Others/product2.jpg" alt="Second slide" class="img-fluid rounded">
-                        <div class="carousel-caption">
-                            <h3 class="font-bold red-text">
-                                <strong>Get 10% discount!</strong>
-                            </h3>
-                            <br>
-                        </div>
-                    </div>
-                    <!--/Second slide-->
-                    <!--Third slide-->
-                    <div class="carousel-item">
-                        <img src="https://mdbootstrap.com/img/Photos/Others/product4.jpg" alt="Third slide" class="img-fluid rounded">
-                        <div class="carousel-caption">
-                            <h3 class="font-bold red-text">
-                                <strong>All products 20% OFF</strong>
-                            </h3>
-                            <br>
-                        </div>
-                    </div>
-                    <!--/Third slide-->
+                    @endforeach
+                    
+                    
                 </div>
                 <!--/.Slides-->
                 <!--Controls-->
@@ -88,9 +69,16 @@
                 <div class="card mb-r wow fadeIn" data-wow-delay="0.2s">
 
                     <!--Card image-->
-                    <div class="shop-card-image-holder" style="background-image: url('{{asset($aProduct->product_image)}}')">
+                    <!--<div class="shop-card-image-holder" style="background-image: url('{{asset($aProduct->product_image)}}')">-->
     <!--                    <img class="img-fluid shop-card-image" src="{{asset($aProduct->product_image)}}" alt="{{$aProduct->product_title}}">-->
+                    <!--</div>-->
+                    
+                    <div class="shop-card-image-parent">
+                        <div class="shop-card-image-child" style="background-image: url('{{asset($aProduct->product_image)}}')">
+                            <span class="shop-card-image-text">View</span>                            
+                        </div>                        
                     </div>
+                    
 
                     <!--Card content-->
                     <div class="card-body">
@@ -134,8 +122,10 @@
                 <div class="card mb-r wow fadeIn" data-wow-delay="0.2s">
 
                     <!--Card image-->
-                    <div class="shop-card-image-holder" style="background-image: url('{{asset($aProduct->product_image)}}')">
-    <!--                    <img class="img-fluid shop-card-image" src="{{asset($aProduct->product_image)}}" alt="{{$aProduct->product_title}}">-->
+                    <div class="shop-card-image-parent">
+                        <div class="shop-card-image-child" style="background-image: url('{{asset($aProduct->product_image)}}')">
+                            <span class="shop-card-image-text">View</span>                            
+                        </div>                        
                     </div>
 
                     <!--Card content-->

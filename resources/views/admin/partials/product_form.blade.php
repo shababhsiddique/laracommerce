@@ -26,14 +26,26 @@
                     </div>
                     <div class="col-sm-9">
                         {!! Form::text('product_title', null, ['class' => 'form-control form-input-custom','placeholder'=>"Someday I will master Laravel"]) !!}
-                        
+                        @if ($errors->has('product_title'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_title') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            Human Readable Title
+                        </span>
+                        @endif
+
                     </div>
                 </div>
 
-                <div class="form-group">
-                    
+                <div class="form-group">                    
                     <div class="col-sm-9 col-sm-offset-3">
-                        <img src="<?php if(isset($oldProductData)){ echo asset($oldProductData->product_image);}?>" class="img-responsive img-fluid" style="width: 150px"/>
+                        <img src="<?php
+                        if (isset($oldProductData)) {
+                            echo asset($oldProductData->product_image);
+                        }
+                        ?>" class="img-responsive img-fluid" style="width: 150px"/>
                     </div>
                 </div>
 
@@ -49,11 +61,19 @@
                                     <i class="material-icons">attach_file</i> 
                                 </button>
                             </div> 
-                            
-                            <input type="text" readonly="" class="form-control form-input-custom" placeholder="Select image file ..." value="<?php if(isset($oldProductData)){ echo $oldProductData->product_image;}?>"> 
-                            
-                            <input type="hidden" name="product_image_previous" value="<?php if(isset($oldProductData)){ echo $oldProductData->product_image;}?>"> 
-                            
+
+                            <input type="text" readonly="" class="form-control form-input-custom" placeholder="Select image file ..." value="<?php
+                            if (isset($oldProductData)) {
+                                echo $oldProductData->product_image;
+                            }
+                            ?>"> 
+
+                            <input type="hidden" name="product_image_previous" value="<?php
+                            if (isset($oldProductData)) {
+                                echo $oldProductData->product_image;
+                            }
+                            ?>"> 
+
                         </div>
                     </div>
                 </div>
@@ -64,11 +84,19 @@
                     </div>
                     <div class="col-sm-5">
                         {!! Form::text('product_slug', null, ['class' => 'form-control form-input-custom','placeholder'=>"someday-i-will-master-laravel"]) !!}
-                        <strong>No space or special characters, will auto generate if empty</strong>
+                        @if ($errors->has('product_slug'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_slug') }}
+                        </span>
+                        @else
+                        <span class="material-input text-info">
+                            Only Alphanumeric and dashes, will auto generate if left empty
+                        </span>
+                        @endif
                     </div>
                 </div>
-                
-                 <div class="row form-group">
+
+                <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('category_id', 'Product Category',['class' => 'custom-form-label']) !!}
                     </div>
@@ -86,14 +114,41 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('product_model', 'Model Name / Number',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-5">
                         {!! Form::text('product_model', null, ['class' => 'form-control form-input-custom']) !!}
-                        
+                        @if ($errors->has('product_model'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_model') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-3">
+                        {!! Form::label('product_options', 'Options',['class' => 'custom-form-label']) !!}
+                    </div>
+                    <div class="col-sm-9">
+                        {!! Form::text('product_options', null, ['class' => 'form-control form-input-custom','placeholder'=>"Silver, White, Black"]) !!}
+                        @if ($errors->has('product_options'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_options') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
+
                     </div>
                 </div>
 
@@ -103,7 +158,28 @@
                         {!! Form::label('product_teaser', 'Product Preface',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-3">
-                        {!! Form::textarea('product_teaser', null, ['class' => 'form-control form-input-custom','rows'=>'4']) !!}
+                        {!! Form::textarea('product_teaser', null, ['id'=>'product_teaser' , 'class' => 'form-control form-input-custom','rows'=>'2']) !!}
+                        @if ($errors->has('product_teaser'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_teaser') }}
+                            Characters: <strong id="show_count"></strong>
+                        </span>
+                        @else
+                        <span class="material-input text-info">
+                            Characters: <strong id="show_count"></strong>
+                            <script type="text/javascript">
+                                $('#product_teaser').keyup(function () {
+                                    var l = $('#product_teaser').val().length;
+                                    $("#show_count").html(l);
+                                    console.log(l);
+                                });
+                                var l = $('#product_teaser').val().length;
+                                $("#show_count").html(l);
+                                console.log(l);
+                            </script>
+                        </span>
+                        @endif
+
                     </div>
                 </div>
 
@@ -114,11 +190,20 @@
                     </div>
                     <div class="col-sm-9">
                         {!! Form::textarea('product_description', null, ['class' => 'ckeditor ','rows'=>'10']) !!}
+                        @if ($errors->has('product_description'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_description') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
                     </div>
                 </div>
 
-               
-                
+
+
                 <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('brand_id', 'Product Manufacturer / Brand',['class' => 'custom-form-label']) !!}
@@ -137,45 +222,81 @@
                         @endif
                     </div>
                 </div>
-                
-                
+
+
                 <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('product_price', 'Product Unit Price',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-2">
-                        {!! Form::text('product_price', null, ['class' => 'form-control form-input-custom','placeholder'=>"100.90"]) !!}                        
+                        {!! Form::text('product_price', null, ['class' => 'form-control form-input-custom','placeholder'=>"100.90"]) !!}
+                        @if ($errors->has('product_price'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_price') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
                     </div>
                 </div>
-                
+
                 <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('product_quantity', 'Quantity In Stock',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-2">
                         {!! Form::number('product_quantity', null, ['class' => 'form-control form-input-custom','placeholder'=>"100"]) !!}                        
-                  </div>
+                        @if ($errors->has('product_quantity'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_quantity') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
+                    </div>
                 </div>
-                
+
                 <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('product_minimum_order', 'Minimum Order Quantity',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-2">
                         {!! Form::number('product_minimum_order', null, ['class' => 'form-control form-input-custom','placeholder'=>"100"]) !!}                        
-                  </div>
+                        @if ($errors->has('product_minimum_order'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_minimum_order') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
+                    </div>
                 </div>
-                
-                 <div class="row form-group">
+
+                <div class="row form-group">
                     <div class="col-sm-3">
                         {!! Form::label('product_reorder_level', 'Stock Re-Order Level',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-2">
                         {!! Form::number('product_reorder_level', null, ['class' => 'form-control form-input-custom','placeholder'=>"100"]) !!}                        
-                  </div>
+                        @if ($errors->has('product_reorder_level'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('product_reorder_level') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+
+                        </span>
+                        @endif
+                    </div>
                 </div>
-                
-                
+
+
 
                 <div class="row form-group">
                     <div class="col-sm-3">

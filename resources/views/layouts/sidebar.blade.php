@@ -8,7 +8,7 @@
     <div class="widget-wrapper">
         <div class="list-group z-depth-1">
             @foreach($categories as $aCategory)
-            <a href="#" class="list-group-item waves-effect">{{$aCategory->category_title}}</a>
+            <a href="{{url('/products/'.$aCategory->category_id.'/'.$aCategory->category_title)}}" class="list-group-item waves-effect">{{$aCategory->category_title}}</a>
             @endforeach
         </div>
     </div>

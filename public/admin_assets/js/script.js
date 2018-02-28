@@ -284,3 +284,11 @@ $(document).on("click", ".confirmDelete", function (e) {
         }
     });
 });
+
+function convertToSlug(Text){
+    return Text
+        .toLowerCase()
+        .replace(/[^\w ]+/g,'')
+        .replace(/ +/g,'-')
+        ;
+}

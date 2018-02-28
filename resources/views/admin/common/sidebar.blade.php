@@ -15,7 +15,7 @@
             <li class="sidesub {{ (Request::is('admin/add-category')||Request::is('admin/list-category')||Request::is('admin/edit-category/*')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">view_list</i>
-                    <p>Manage Categories</p>
+                    <p>Categories</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="{{url('/admin/list-category')}}">List All</a></li>
@@ -26,7 +26,7 @@
             <li class="sidesub {{ (Request::is('admin/new-brand')||Request::is('admin/list-brands')||Request::is('admin/edit-brand/*')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">view_list</i>
-                    <p>Manage Brands</p>
+                    <p>Manufacturers</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="{{url('/admin/list-brands')}}">List All</a></li>
@@ -36,14 +36,27 @@
             
             <li class="sidesub {{ ( Request::is('admin/new-product') || Request::is('admin/edit-product/*') || Request::is('admin/list-products')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">view_list</i>
-                    <p>Manage Products</p>
+                    <i class="material-icons">label</i>
+                    <p>Products</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="{{url('/admin/list-products')}}">List All</a></li>
                     <li><a class="dropdown-item" href="{{url('/admin/new-product')}}">New Product</a></li>
                 </ul>  
             </li>
+            
+              <li class="sidesub {{ ( Request::is('admin/manage-slider') || Request::is('admin/manage-slider/*') ) ? 'active open' : '' }}">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">web</i>
+                    <p>Site Element</p>
+                </a>
+                <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="{{url('/admin/manage-slider')}}">Sliders</a></li>
+                </ul>  
+            </li>
+            
+            
+           
             
             <li>
                 <a href="./icons.html">

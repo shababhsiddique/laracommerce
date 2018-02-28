@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\Article;
+use File;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
@@ -40,8 +40,8 @@ class AdminController extends Controller {
      * @param type $text
      * @return string
      */
-    private function makeSlug($prefix,$text) {
-        
+    private function makeSlug($prefix, $text) {
+
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
@@ -61,8 +61,8 @@ class AdminController extends Controller {
         $text = strtolower($text);
 
         //Add Prefix
-        $text = $prefix.$text;
-        
+        $text = $prefix . $text;
+
         if (empty($text)) {
             return 'n-a';
         }
@@ -101,7 +101,6 @@ class AdminController extends Controller {
         $this->authCheck();
 
         //Load Component
-        //Load Component
         $this->layout['adminContent'] = view('admin.partials.dashboard');
 
         //return view
@@ -122,7 +121,7 @@ class AdminController extends Controller {
 
         //Load Component        
         $this->layout['adminContent'] = view('admin.partials.category_form');
-//        $this->layout['site_title'] = "Add Category";
+
         //return view
         return view('admin.master', $this->layout);
     }
@@ -135,6 +134,13 @@ class AdminController extends Controller {
     public function saveCategory(Request $request) {
 
         $this->authCheck();
+        
+        $validatedData = $request->validate([
+            'category_title' => 'required|string|unique:categories|max:30',
+            'category_description' => 'required'
+        ]);      
+         
+         
 
         $category = new Category;
 
@@ -143,64 +149,6 @@ class AdminController extends Controller {
         $category->publication_status = $request->publication_status;
 
         $redirectUrl = 'admin/list-category';
-
-        /*
-         * Image Upload
-         */
-
-        $files = $request->file('category_image');
-
-        //File Is Selected, Proceed with upload
-        if ($files) {
-
-            $extension = $files->extension();
-
-            $allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
-
-            if (!( $request->file('category_image')->isValid() && (in_array($extension, $allowedExtensions)) )) {
-                //File Upload Failed, 
-                Session::put('message', array(
-                    'title' => 'Invalid File Selected',
-                    'body' => "Please select image file with png, jpg or bmp extension. With less than 2mb size",
-                    'type' => 'danger'
-                ));
-
-                return Redirect::to($redirectUrl);
-            }
-
-            $filename = $files->getClientOriginalName();
-            $customName = uniqid('cimg_') . "_" . str_replace(' ', '_', strtolower($category->category_title)) . "." . $extension;
-            $imgUrl = 'public/images/categories/' . $customName;
-            $destinationPath = base_path() . "/public/images/categories/";
-
-            //Try upload
-            $success = $files->move($destinationPath, $customName);
-
-            if ($success) {
-
-//                if (isset($request->article_id) && ($request->article_image_previous != "")) {
-//                    $oldFileName = $request->article_image_previous;
-//                    unlink($oldFileName);
-//                }
-
-                $category->category_image = $imgUrl;
-
-                //If it is an edit , remove old file
-            } else {
-
-                //File Upload Failed, 
-                Session::put('message', array(
-                    'title' => 'Error',
-                    'body' => "File Upload Failed",
-                    'type' => 'danger'
-                ));
-
-
-                return Redirect::to($redirectUrl);
-            }
-        }
-
-
 
         $category->save();
 
@@ -345,6 +293,14 @@ class AdminController extends Controller {
     }
 
     public function updateCategory(Request $request) {
+        
+        
+        $validatedData = $request->validate([
+            'category_title' => 'required|string|unique:categories|max:30',
+            'category_description' => 'required'
+        ]);      
+         
+        
 
         $this->authCheck();
 
@@ -354,61 +310,6 @@ class AdminController extends Controller {
         $category->category_description = $request->category_description;
 
         $redirectUrl = 'admin/edit-category/' . $request->category_id;
-
-        /*
-         * Image Upload
-         */
-
-        $files = $request->file('category_image');
-
-        //File Is Selected, Proceed with upload
-        if ($files) {
-
-            $extension = $files->extension();
-
-            $allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
-
-            if (!( $request->file('category_image')->isValid() && (in_array($extension, $allowedExtensions)) )) {
-                //File Upload Failed, 
-                Session::put('message', array(
-                    'title' => 'Invalid File Selected',
-                    'body' => "Please select image file with png, jpg or bmp extension. With less than 2mb size",
-                    'type' => 'danger'
-                ));
-
-                return Redirect::to($redirectUrl);
-            }
-
-            $filename = $files->getClientOriginalName();
-            $customName = uniqid('cimg_') . "_" . str_replace(' ', '_', strtolower($category->category_title)) . "." . $extension;
-            $imgUrl = 'public/images/categories/' . $customName;
-            $destinationPath = base_path() . "/public/images/categories/";
-
-            //Try upload
-            $success = $files->move($destinationPath, $customName);
-
-            if ($success) {
-
-                if (isset($request->category_image_previous) && ($request->category_image_previous != "")) {
-                    unlink($request->category_image_previous);
-                }
-
-                $category->category_image = $imgUrl;
-
-                //If it is an edit , remove old file
-            } else {
-
-                //File Upload Failed, 
-                Session::put('message', array(
-                    'title' => 'Error',
-                    'body' => "File Upload Failed",
-                    'type' => 'danger'
-                ));
-
-
-                return Redirect::to($redirectUrl);
-            }
-        }
 
         $category->save();
 
@@ -472,13 +373,27 @@ class AdminController extends Controller {
     public function saveBrand(Request $request) {
 
         $this->authCheck();
-
+        
         if (isset($request->brand_id)) {
             //Its Update
             $brand = Brand::find($request->brand_id);
             $redirectUrl = '/admin/edit-brand/' . $request->brand_id;
+            
+            $validatedData = $request->validate([
+                'brand_title' => 'required|string|max:50',
+                'brand_description' => 'required'
+            ]);
+
+
         } else {
             //Its new
+            
+            $validatedData = $request->validate([
+                'brand_title' => 'required|string|unique:brands|max:50',
+                'brand_description' => 'required'
+            ]);
+
+
             $brand = new Brand;
             $redirectUrl = '/admin/list-brands';
         }
@@ -665,8 +580,25 @@ class AdminController extends Controller {
     public function saveProduct(Request $request) {
 
         $this->authCheck();
+        
+        $validatedData = $request->validate([
+            'product_title' => 'required|string|max:70',            
+            'product_teaser' => 'required|max:50',
+            'product_description' => 'required',
+            'product_model' => 'required',
+            'product_options' => 'required',
+            'product_quantity' => 'required|integer',
+            'product_price' => 'required|numeric',
+            'product_minimum_order' => 'required|integer',
+            'product_reorder_level' => 'required|integer'
+        ]);
 
         if (isset($request->product_id)) {
+            
+            $validatedData = $request->validate([
+                'product_slug' => 'sometimes|alpha_dash|string|max:100'
+            ]);
+            
             //Its Update
             $product = Product::find($request->product_id);
             $redirectUrl = '/admin/edit-product/' . $request->product_id;
@@ -744,12 +676,14 @@ class AdminController extends Controller {
         $product->product_slug = $request->product_slug;
         if ($product->product_slug == "") {
             //Need work here later
-            $product->product_slug = $this->makeSlug($request->product_id,$request->product_title);
+            $product->product_slug = $this->makeSlug($request->product_id, $request->product_title);
         }
 
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
         $product->product_model = $request->product_model;
+        $product->product_options = $request->product_options;
+        
 
         $product->product_price = $request->product_price;
         $product->product_quantity = $request->product_quantity;
@@ -830,7 +764,7 @@ class AdminController extends Controller {
         switch ($status) {
             case "fav":
 
-                
+
                 $product->featured_status = 1;
                 $product->save();
 
@@ -843,7 +777,7 @@ class AdminController extends Controller {
                 break;
             case "unfav":
 
-                
+
                 $product->featured_status = 0;
                 $product->save();
 
@@ -910,7 +844,108 @@ class AdminController extends Controller {
     /**
      * Product Management End
      */
-   
+    /**
+     * Shop Elements Management
+     */
+
+    /**
+     * Manage Slider
+     * @return type
+     */
+    public function manageFrontSlider() {
+
+        $this->authCheck();
+
+        $sliderImages = array();
+        $filesInFolder = File::files('public/images/slider');
+
+        foreach ($filesInFolder as $path) {
+            $sliderImages[] = pathinfo($path);
+        }
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.slider_manager')->with('sliderImages', $sliderImages);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    public function saveSliderImages(Request $request) {
+
+        $allSliderFiles = $request->file('slider_images');
+
+        $uploadFailed = 0;
+        $uploadOk = 0;
+
+        $redirectUrl = '/admin/manage-slider';
+
+        foreach ($allSliderFiles as $index => $files) {
+
+
+
+            $extension = $files->extension();
+
+            $allowedExtensions = ['png', 'jpg', 'jpeg', 'bmp'];
+
+            if (!( $request->file("slider_images.$index")->isValid() && (in_array($extension, $allowedExtensions)) )) {
+                $uploadFailed++;
+                continue;
+            }
+
+            //$filename = $files->getClientOriginalName();
+            $customName = uniqid('sldr_') . uniqid() . "." . $extension;
+            //$imgUrl = 'public/images/slider/' . $customName;
+            $destinationPath = base_path() . "/public/images/slider/";
+
+            //Try upload
+            $success = $files->move($destinationPath, $customName);
+
+            if ($success) {
+                $uploadOk++;
+            } else {
+                $uploadFailed++;
+            }
+        }
+
+        if ($uploadFailed == 0) {
+            //File Upload Failed, 
+            Session::put('message', array(
+                'title' => 'Success',
+                'body' => "$uploadOk Files Uploaded",
+                'type' => 'success'
+            ));
+        } else {
+            //File Upload Failed, 
+            Session::put('message', array(
+                'title' => "Warning $uploadFailed files failed to upload",
+                'body' => "$uploadOk files uploaded, make sure the files are jpg, png or bmp",
+                'type' => 'danger'
+            ));
+        }
+
+
+
+        return Redirect::to($redirectUrl);
+        //File Is Selected, Proceed with upload
+    }
+
+    public function deleteSliderImage($imgFile) {
+
+        $redirectUrl = '/admin/manage-slider';
+
+        if (File::exists("public/images/slider/$imgFile")) {
+            File::delete("public/images/slider/$imgFile");
+        }
+
+        //Message for Notification Builder
+        Session::put('message', array(
+            'title' => 'Image deleted',
+            'body' => 'Deleted ' . $imgFile,
+            'type' => 'primary'
+        ));
+
+        return Redirect::to($redirectUrl);
+    }
 
     /**
      * For testing purposes

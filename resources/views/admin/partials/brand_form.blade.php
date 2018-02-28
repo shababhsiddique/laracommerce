@@ -25,7 +25,16 @@
                         {!! Form::label('brand_title', 'Brand Title',['class' => 'custom-form-label']) !!}
                     </div>
                     <div class="col-sm-9">
-                        {!! Form::text('brand_title', null, ['class' => 'form-control form-input-custom','placeholder'=>"Samsung"]) !!}                        
+                        {!! Form::text('brand_title', null, ['class' => 'form-control form-input-custom','placeholder'=>"Samsung"]) !!}
+                        @if ($errors->has('brand_title'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('brand_title') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            Max 50 Characters
+                        </span>
+                        @endif
                     </div>
                 </div>
 
@@ -36,6 +45,15 @@
                     </div>
                     <div class="col-sm-9">
                         {!! Form::textarea('brand_description', null, ['class' => 'ckeditor ','rows'=>'10']) !!}
+                        @if ($errors->has('brand_description'))
+                        <span class="material-input text-danger">
+                            <i class="fa fa-warning"></i> {{ $errors->first('brand_description') }}
+                        </span>
+                        @else
+                        <span class="material-input">
+                            Required
+                        </span>
+                        @endif
                     </div>
                 </div>
 

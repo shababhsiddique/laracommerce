@@ -11,8 +11,13 @@
 |
 */
 
-/* Blog */
+
+/* Site */
 Route::get('/', 'ShopController@index')->name('home');
+Route::get('/home', 'ShopController@index')->name('home');
+Route::get('/product/{product_id}', 'ShopController@productDetails')->name('product');
+Route::get('/products/{category_id}/{category_name}', 'ShopController@productCategory');
+Route::get('/search', 'ShopController@productSearch');
 Route::get('/contact', 'ShopController@contact')->name('contact');
 
 /* Auth Generated */
@@ -20,11 +25,18 @@ Auth::routes();
 
 
 
+
+
+
+/**
+ * Admin Start
+ */
+
 /* Admin Login*/
 Route::get('/admin', 'AdminLoginController@index');
 Route::post('/adminverify', 'AdminLoginController@verify');
 
-/* Admin Panel*/
+/* Admin Dashboard*/
 Route::get('/adminlogout','AdminController@logout');
 Route::get('/dashboard', 'AdminController@index');
 
@@ -61,6 +73,12 @@ Route::get('/admin/edit-product/{id}', 'AdminController@editProduct');
 Route::post('/admin/save-product', 'AdminController@saveProduct');
 
 Route::get('/admin/changestatus-product/{status}/{id}', 'AdminController@changeProductStatus');
+
+
+/* Site Management*/
+Route::get('/admin/manage-slider', 'AdminController@manageFrontSlider');
+Route::post('/admin/upload-slider', 'AdminController@saveSliderImages');
+Route::get('/admin/delete-slider-image/{img}', 'AdminController@deleteSliderImage');
 
 
 

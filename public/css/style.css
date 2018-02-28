@@ -15,6 +15,7 @@ main {
     background-color: #53463d;
 }
 
+
 footer.page-footer {
     background-color: #53463d;
     margin-top: 2rem;
@@ -118,8 +119,8 @@ footer.page-footer {
     cursor: pointer;
     -webkit-transition: .3s;
     transition: .3s;
-    
-    
+
+
 }
 
 .btn-floating i{
@@ -165,16 +166,12 @@ footer.page-footer {
 }
 
 .shop-card-image-holder{
-    
+
     height: 220px;
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-}
-.shop-card-image{
-/*    height: 200px !important;
-    width: auto !important;*/
 }
 
 .shop-card-title{
@@ -190,11 +187,51 @@ footer.page-footer {
     color: black;
 }
 
-/*@media (min-width:34em) {
-    .product-deck > .card
-    {
-        width: 29%;
-        flex-wrap: wrap;
-        flex: initial; 
-    }
-}*/
+.shop-card-image-parent {
+    width: 100%; 
+    min-height: 230px;
+    overflow: hidden;
+    
+}
+
+.shop-card-image-child {
+    width: 100%;
+    min-height: 230px;
+    background-color: black; /* fallback color */
+    background-position: center;
+    background-size: cover;
+    transition: all .5s;
+}
+
+
+.shop-card-image-parent:hover .shop-card-image-child,
+.shop-card-image-parent:focus .shop-card-image-child {
+    transform: scale(1.1);
+}
+
+
+.shop-card-image-text {
+    opacity: 0;
+    background-color: rgba(0,0,50,0.2);
+    color: white; /* Good thing we set a fallback color! */
+    width: 100%;
+    text-align: center;
+    line-height: 230px;
+    font-weight: 400;
+    font-size: 2rem;
+    position: absolute;
+    transition: all .5s;
+}
+
+
+.shop-card-image-parent:hover .shop-card-image-text,
+.shop-card-image-parent:focus .shop-card-image-text {
+    opacity: 1;
+}
+
+.navbar .dropdown-menu a.nav-username{
+    font-weight: 500;
+}
+.navbar .dropdown-menu a.nav-username:hover{
+    color: #666 !important;
+}
