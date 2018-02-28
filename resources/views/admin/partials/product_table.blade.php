@@ -15,8 +15,7 @@
                     <thead class="text-primary">
                         <tr>
                             <th style="width: 30px; text-align: right">#</th>
-                            <th></th>    
-                            <th></th>    
+                            <th style="width: 100px"></th>    
                             <th></th>    
                             <th>Category</th>
                             <th>Brand</th>
@@ -32,7 +31,7 @@
                                 <td>{{$anProduct->product_id}}</td>                             
                                 <td><image src="{{asset($anProduct->product_image)}}" class="img-responsive grid-thumb"/></td>          
                                 <td><strong>{{$anProduct->product_title}}</strong></td>
-                                <td>{{substr(strip_tags($anProduct->product_teaser),0,70)}}...</td>
+                                <!--<td>{{substr(strip_tags($anProduct->product_teaser),0,70)}}...</td>-->
                                 <td>{{$anProduct->category->category_title}}</td>
                                 <td>{{$anProduct->brand->brand_title}}</td>
                                 <td>{{$anProduct->product_model}}</td>
