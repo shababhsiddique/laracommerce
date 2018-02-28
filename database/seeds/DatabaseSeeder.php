@@ -11,11 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-           //Create Blog Posts
-//        $path = 'db_blog_seeder.sql';
-//        DB::unprepared(file_get_contents($path));
-//        $this->command->info('Blog Posts seeded!');
-
+        //Create Sample Data
+        $path = 'db_laravel_shop_seeder.sql';
+        DB::unprepared(file_get_contents($path));
+        $this->command->info('Shop Seeded!');
 
     }
 }

@@ -25,36 +25,36 @@ class CreteBrandsTable extends Migration
             $table->timestamps();
         });
         
-        // Create Sample Categories
-        DB::table('brands')->insert(
-                array(
-                    'brand_title' => 'Samsung',
-                    'brand_description' => 'Samsung International',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
-        
-        DB::table('brands')->insert(
-                array(
-                    'brand_title' => 'Walton',
-                    'brand_description' => 'Walton Bangladesh',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
-        
-        DB::table('brands')->insert(
-                array(
-                    'brand_title' => 'Dholai Khal',
-                    'brand_description' => 'Dholai Khal maney Quality Ponno',
-                    'publication_status' => 1,
-                    'deletion_status' => 1,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
+//        // Create Sample Categories
+//        DB::table('brands')->insert(
+//                array(
+//                    'brand_title' => 'Samsung',
+//                    'brand_description' => 'Samsung International',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
+//        
+//        DB::table('brands')->insert(
+//                array(
+//                    'brand_title' => 'Walton',
+//                    'brand_description' => 'Walton Bangladesh',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
+//        
+//        DB::table('brands')->insert(
+//                array(
+//                    'brand_title' => 'Dholai Khal',
+//                    'brand_description' => 'Dholai Khal maney Quality Ponno',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 1,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
         
         
     }

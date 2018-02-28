@@ -26,62 +26,62 @@ class CreateCategoriesTable extends Migration {
         });
 
 
-        // Create Sample Categories
-        DB::table('categories')->insert(
-                array(
-                    'category_title' => 'Home Appliances',
-                    'category_description' => 'Electronics for the home',
-//                    'category_image' => '',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
-
-        DB::table('categories')->insert(
-                array(
-                    'category_title' => 'Computer Accessories',
-                    'category_description' => 'Computer Peripherals and accessories',
-//                    'category_image' => '',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
-
-
-        DB::table('categories')->insert(
-                array(
-                    'category_title' => 'Mobile Devices',
-                    'category_description' => 'Mobile and Tablet Devices',
-//                    'category_image' => '',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
-
-        DB::table('categories')->insert(
-                array(
-                    'category_title' => 'Healthcare',
-                    'category_description' => 'Healthcare Items',
-//                    'category_image' => '',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
-        
-        DB::table('categories')->insert(
-                array(
-                    'category_title' => 'Gaming',
-                    'category_description' => 'Gaming Items',
-//                    'category_image' => '',
-                    'publication_status' => 1,
-                    'deletion_status' => 0,
-                    'created_at' => date('Y-m-d H:i:s')
-                )
-        );
+//        // Create Sample Categories
+//        DB::table('categories')->insert(
+//                array(
+//                    'category_title' => 'Home Appliances',
+//                    'category_description' => 'Electronics for the home',
+////                    'category_image' => '',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
+//
+//        DB::table('categories')->insert(
+//                array(
+//                    'category_title' => 'Computer Accessories',
+//                    'category_description' => 'Computer Peripherals and accessories',
+////                    'category_image' => '',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
+//
+//
+//        DB::table('categories')->insert(
+//                array(
+//                    'category_title' => 'Mobile Devices',
+//                    'category_description' => 'Mobile and Tablet Devices',
+////                    'category_image' => '',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
+//
+//        DB::table('categories')->insert(
+//                array(
+//                    'category_title' => 'Healthcare',
+//                    'category_description' => 'Healthcare Items',
+////                    'category_image' => '',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
+//        
+//        DB::table('categories')->insert(
+//                array(
+//                    'category_title' => 'Gaming',
+//                    'category_description' => 'Gaming Items',
+////                    'category_image' => '',
+//                    'publication_status' => 1,
+//                    'deletion_status' => 0,
+//                    'created_at' => date('Y-m-d H:i:s')
+//                )
+//        );
     }
 
     /**
