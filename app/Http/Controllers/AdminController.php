@@ -9,6 +9,7 @@ use File;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
+use App\User;
 
 session_start();
 
@@ -134,13 +135,13 @@ class AdminController extends Controller {
     public function saveCategory(Request $request) {
 
         $this->authCheck();
-        
+
         $validatedData = $request->validate([
             'category_title' => 'required|string|unique:categories|max:30',
             'category_description' => 'required'
-        ]);      
-         
-         
+        ]);
+
+
 
         $category = new Category;
 
@@ -293,14 +294,14 @@ class AdminController extends Controller {
     }
 
     public function updateCategory(Request $request) {
-        
-        
+
+
         $validatedData = $request->validate([
             'category_title' => 'required|string|unique:categories|max:30',
             'category_description' => 'required'
-        ]);      
-         
-        
+        ]);
+
+
 
         $this->authCheck();
 
@@ -373,21 +374,19 @@ class AdminController extends Controller {
     public function saveBrand(Request $request) {
 
         $this->authCheck();
-        
+
         if (isset($request->brand_id)) {
             //Its Update
             $brand = Brand::find($request->brand_id);
             $redirectUrl = '/admin/edit-brand/' . $request->brand_id;
-            
+
             $validatedData = $request->validate([
                 'brand_title' => 'required|string|max:50',
                 'brand_description' => 'required'
             ]);
-
-
         } else {
             //Its new
-            
+
             $validatedData = $request->validate([
                 'brand_title' => 'required|string|unique:brands|max:50',
                 'brand_description' => 'required'
@@ -580,9 +579,9 @@ class AdminController extends Controller {
     public function saveProduct(Request $request) {
 
         $this->authCheck();
-        
+
         $validatedData = $request->validate([
-            'product_title' => 'required|string|max:70',            
+            'product_title' => 'required|string|max:70',
             'product_teaser' => 'required|max:50',
             'product_description' => 'required',
             'product_model' => 'required',
@@ -594,11 +593,11 @@ class AdminController extends Controller {
         ]);
 
         if (isset($request->product_id)) {
-            
+
             $validatedData = $request->validate([
                 'product_slug' => 'sometimes|alpha_dash|string|max:100'
             ]);
-            
+
             //Its Update
             $product = Product::find($request->product_id);
             $redirectUrl = '/admin/edit-product/' . $request->product_id;
@@ -683,7 +682,7 @@ class AdminController extends Controller {
         $product->brand_id = $request->brand_id;
         $product->product_model = $request->product_model;
         $product->product_options = $request->product_options;
-        
+
 
         $product->product_price = $request->product_price;
         $product->product_quantity = $request->product_quantity;
@@ -844,6 +843,72 @@ class AdminController extends Controller {
     /**
      * Product Management End
      */
+    
+    /**
+     * User Management
+     */
+    /**
+     * List All Users
+     * @return type
+     */
+    public function listAllUsers() {
+
+        $this->authCheck();
+
+        $listUsers = User::orderBy('updated_at', 'DESC')
+                ->get();
+
+
+
+        //Load Component        
+        $this->layout['adminContent'] = view('admin.partials.user_table')
+                ->with('allUsers', $listUsers);
+
+
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Change user status
+     * @param type $status
+     * @param type $id
+     * @return type
+     */
+    public function changeUserStatus($status, $id) {
+
+        $this->authCheck();
+
+        $user = User::find($id);
+
+        switch ($status) {
+            case "ban":
+
+                $user->ban_status = 1;
+                $user->save();
+
+                //Message for Notification Builder
+                Session::put('message', array(
+                    'title' => 'User Banned',
+                    'body' => 'User wont be able to log in now',
+                    'type' => 'success'
+                ));
+                break;
+            default:
+
+                $user->ban_status = 0;
+                $user->save();
+
+                //Message for Notification Builder
+                Session::put('message', array(
+                    'title' => 'Updated Status to unbanned',
+                    'body' => 'user can now log in',
+                    'type' => 'success'
+                ));
+                break;
+        }
+
+        return Redirect::to('/admin/list-users');
+    }
     /**
      * Shop Elements Management
      */

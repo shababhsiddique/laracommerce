@@ -44,6 +44,12 @@
                     <li><a class="dropdown-item" href="{{url('/admin/new-product')}}">New Product</a></li>
                 </ul>  
             </li>
+            <li class="{{ Request::is('list-users') ? 'active' : '' }}">
+                <a href="{{url('/admin/list-users')}}">
+                    <i class="material-icons">Users</i>
+                    <p>Users</p>
+                </a>
+            </li>
             
               <li class="sidesub {{ ( Request::is('admin/manage-slider') || Request::is('admin/manage-slider/*') ) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

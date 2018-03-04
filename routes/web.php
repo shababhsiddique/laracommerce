@@ -17,8 +17,15 @@ Route::get('/', 'ShopController@index')->name('home');
 Route::get('/home', 'ShopController@index')->name('home');
 Route::get('/product/{product_id}', 'ShopController@productDetails')->name('product');
 Route::get('/products/{category_id}/{category_name}', 'ShopController@productCategory');
+Route::get('/brand/{brand_id}/{brand_name}', 'ShopController@productByBrand');
 Route::get('/search', 'ShopController@productSearch');
 Route::get('/contact', 'ShopController@contact')->name('contact');
+
+/* Shopping Cart */
+Route::get('/add-to-cart/{product_id}', 'CartController@addToCart');
+Route::get('/cart', 'CartController@index');
+Route::get('/cart-qtchange/{rowid}/{qt}', 'CartController@changeCartQty');
+Route::get('/cart-remove/{rowid}', 'CartController@removeCartItem');
 
 /* Auth Generated */
 Auth::routes();
@@ -73,6 +80,19 @@ Route::get('/admin/edit-product/{id}', 'AdminController@editProduct');
 Route::post('/admin/save-product', 'AdminController@saveProduct');
 
 Route::get('/admin/changestatus-product/{status}/{id}', 'AdminController@changeProductStatus');
+
+
+
+
+/* User Management */
+Route::get('/admin/list-users', 'AdminController@listAllUsers');
+
+Route::get('/admin/edit-user/{id}', 'AdminController@editUser');
+Route::post('/admin/save-user', 'AdminController@saveUser');
+
+Route::get('/admin/changestatus-user/{status}/{id}', 'AdminController@changeUserStatus');
+
+
 
 
 /* Site Management*/

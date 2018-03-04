@@ -23,6 +23,7 @@ class ShopController extends Controller {
                 ->where("publication_status", 1)
                 ->get();
 
+        $this->layout['shopNotification'] = view('layouts.notification');
         //Initialize Sidebar Contents
         $this->layout['sidebar'] = view('layouts.sidebar', array(
             'categories' => $categories,
@@ -72,6 +73,21 @@ class ShopController extends Controller {
         $listProducts = Product::where("deletion_status", 0)
                 ->where("publication_status", 1)
                 ->where('category_id', $category_id)
+                ->get();
+
+
+        $this->layout['main_content'] = view('pages.search')
+                ->with('listProducts', $listProducts);
+
+        return view('layouts.master', $this->layout);
+    }
+    
+    
+    public function productByBrand($brand_id, $brand_name) {
+
+        $listProducts = Product::where("deletion_status", 0)
+                ->where("publication_status", 1)
+                ->where('brand_id', $brand_id)
                 ->get();
 
 

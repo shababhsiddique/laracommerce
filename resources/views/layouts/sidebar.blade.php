@@ -27,7 +27,7 @@
         <h4 class="h4-responsive font-bold mb-3 mt-4">Brands:</h4>
         <div class="list-group">
             @foreach($brands as $aBrand)
-            <a href="#" class="list-group-item">{{$aBrand->brand_title}}</a>
+            <a href="{{url('/brand/'.$aBrand->brand_id.'/'.$aBrand->brand_title)}}" class="list-group-item">{{$aBrand->brand_title}}</a>
             @endforeach
         </div>
     </div>

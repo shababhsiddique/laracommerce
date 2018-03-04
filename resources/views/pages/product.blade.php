@@ -84,7 +84,7 @@
                         </dl>
 
                         <hr>
-                        <button type="button" class="btn btn-danger btn-md">Add to cart</button>
+                        <a href="{{url('/add-to-cart/'.$productDetails->product_id)}}" type="button" class="btn btn-danger btn-md">Add to cart</a>
                     </div>
                     <!--Product-->
 

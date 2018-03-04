@@ -15,6 +15,7 @@ class AddMobileFieldToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('mobile');
+            $table->tinyInteger("ban_status")->default(0);
         });
     }
 
@@ -26,7 +27,8 @@ class AddMobileFieldToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('mobile');
+            $table->dropColumn('ban_status');
         });
     }
 }

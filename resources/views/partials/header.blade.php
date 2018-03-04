@@ -16,9 +16,12 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ Request::is('about') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{URL::to('/about')}}">About</a>
+                    @guest                    
+                    @else
+                    <li class="nav-item {{ Request::is('cart') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{URL::to('/cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a>
                     </li>
+                    @endguest                      
                     <li class="nav-item {{ Request::is('contact') ? 'active' : '' }}">
                         <a class="nav-link" href="{{URL::to('/contact')}}">Contact</a>
                     </li>                    

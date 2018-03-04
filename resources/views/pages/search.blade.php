@@ -40,7 +40,7 @@
                         <!--Text-->
                         <p class="card-text mt-4 shop-card-teaser">{!!$aProduct->product_teaser!!}</p>
 
-                        <a href="ecommerce_product.html" class="btn btn-primary btn-sm">Buy now </a>
+                        <a href="{{url('/add-to-cart/'.$aProduct->product_id)}}" class="btn btn-primary btn-sm">Buy now </a>
                     </div>
 
                 </div>                
