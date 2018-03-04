@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Http\Request;
+
 class LoginController extends Controller
 {
     /*
@@ -35,5 +37,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    
+    
+    /**
+     * Trying to get ban status check
+     * @param \App\Http\Controllers\Auth\Request $request
+     * @param type $user
+     * @return type
+     */
+    public function authenticated(Request $request, $user)
+    {
+        if ($user->ban_status) {
+            auth()->logout();
+            return back()->with('warning', 'Your account is banned, please contact admininstrator.');
+        }
+        return redirect()->intended($this->redirectPath());
     }
 }

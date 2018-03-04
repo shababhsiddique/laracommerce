@@ -14,7 +14,7 @@
             </li>
             <li class="sidesub {{ (Request::is('admin/add-category')||Request::is('admin/list-category')||Request::is('admin/edit-category/*')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">view_list</i>
+                    <i class="material-icons">format_list_numbered</i>
                     <p>Categories</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -25,7 +25,7 @@
             
             <li class="sidesub {{ (Request::is('admin/new-brand')||Request::is('admin/list-brands')||Request::is('admin/edit-brand/*')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">view_list</i>
+                    <i class="material-icons">format_list_numbered</i>
                     <p>Manufacturers</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -36,7 +36,7 @@
             
             <li class="sidesub {{ ( Request::is('admin/new-product') || Request::is('admin/edit-product/*') || Request::is('admin/list-products')) ? 'active open' : '' }}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">label</i>
+                    <i class="material-icons">label_outline</i>
                     <p>Products</p>
                 </a>
                 <ul class="sidesub-ul dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -44,9 +44,9 @@
                     <li><a class="dropdown-item" href="{{url('/admin/new-product')}}">New Product</a></li>
                 </ul>  
             </li>
-            <li class="{{ Request::is('list-users') ? 'active' : '' }}">
+            <li class="{{ Request::is('admin/list-users') ? 'active' : '' }}">
                 <a href="{{url('/admin/list-users')}}">
-                    <i class="material-icons">Users</i>
+                    <i class="material-icons">people</i>
                     <p>Users</p>
                 </a>
             </li>

@@ -14,6 +14,7 @@
             <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                 {{ csrf_field() }}
 
+
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                     <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
@@ -23,6 +24,11 @@
                         @if ($errors->has('email'))
                         <span class="help-block text-danger">
                             <strong>{{ $errors->first('email') }}</strong>
+                        </span>
+                        @endif
+                        @if (session('warning'))
+                        <span class="help-block text-danger">
+                            <strong>{{ session('warning') }}</strong>
                         </span>
                         @endif
                     </div>
@@ -51,10 +57,10 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <br/>
-                
+
                 <div class=" form-group">
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">
@@ -65,7 +71,7 @@
                         </a>
                         <br/>                        
                         <a href="{{url('/register')}}" class=" btn btn-sm btn-default waves-effect waves-light" >
-                             <span class="text-lowercase">New Here?</span> &nbsp;&nbsp;&nbsp;<strong>Register Now!</strong> <div class="ripple-container"></div>
+                            <span class="text-lowercase">New Here?</span> &nbsp;&nbsp;&nbsp;<strong>Register Now!</strong> <div class="ripple-container"></div>
                         </a>
                     </div>
                 </div>

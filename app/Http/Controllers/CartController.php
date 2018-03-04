@@ -19,15 +19,15 @@ class CartController extends Controller {
 
     public function __construct() {
 
-        $this->middleware('auth');
+//        $this->middleware('auth');
 
         $this->layout['shopNotification'] = view('layouts.notification');
     }
 
     public function index() {
+        
         $this->layout['main_content'] = view('pages.cart');
-        unset($this->layout['sidebar']);
-
+        
         return view('layouts.master', $this->layout);
     }
 
